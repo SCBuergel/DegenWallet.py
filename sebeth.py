@@ -2,11 +2,11 @@ from web3 import Web3
 import json
 
 # DO NOT COMMIT SECRET INFURA PROJECT ID!!!
-infuraProjectId = ""
+infuraProjectId = "e68eab41f9f74d4287e74f038d1ae5bf"
 
-# infuraWS = "wss://mainnet.infura.io/ws/v3/" + infuraProjectId
+infuraWS = "wss://mainnet.infura.io/ws/v3/" + infuraProjectId
 # infuraHTTP = "https://mainnet.infura.io/v3/" + infuraProjectId
-xDaiWS = "wss://rpc.xdaichain.com/wss"
+# xDaiWS = "wss://rpc.xdaichain.com/wss"
 
 erc20abi = "ABI/ERC20.json"
 hoprDistributorAbi = "ABI/HoprDistributor.json"
@@ -20,9 +20,12 @@ hoprAddress= "0xF5581dFeFD8Fb0e4aeC526bE659CFaB1f8c781dA"
 xDaiHoprDistributorAddress = "0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66"
 xDaiHoprMsAddress = "0x5E1c4e7004B7411bA27Dc354330fab31147DFeF1"
 
-# web3 = Web3(Web3.WebsocketProvider(infuraWS))
+mainNetHoprDistributorAddress = "0xB413a589ec21Cc1FEc27d1175105a47628676552"
+mainNetHoprMsAddress = "0x4F50Ab4e931289344a57f2fe4bBd10546a6fdC17"
+
+web3 = Web3(Web3.WebsocketProvider(infuraWS))
 # web3 = Web3(Web3.HTTPProvider(infuraHTTP))
-web3 = Web3(Web3.WebsocketProvider(xDaiWS))
+# web3 = Web3(Web3.WebsocketProvider(xDaiWS))
 
 print(web3.isConnected())
 
@@ -37,6 +40,8 @@ hopr = web3.eth.contract(address = hoprAddress, abi = abiErc20)
 xDaiHoprDistributor = web3.eth.contract(address = xDaiHoprDistributorAddress, abi = abiHoprDistributor)
 xDaiHoprMs = web3.eth.contract(address = xDaiHoprMsAddress, abi = abiGnosisWallet)
 # end of setup
+mainNetDistributor = web3.eth.contract(address = mainNetHoprDistributorAddress, abi = abiHoprDistributor)
+mainNetHoprMs = web3.eth.contract(address = mainNetHoprMsAddress, abi = abiGnosisWallet)
 
 
 
@@ -64,11 +69,25 @@ addAllocationsPayload = xDaiHoprDistributor.encodeABI("addAllocations", args=[re
 
 # checking multisig transactions
 txId = 63
-tx = xDaiHoprMs.functions.transactions(txId).call()
+# tx = xDaiHoprMs.functions.transactions(txId).call()
 # print(tx)
 
-isConfirmed = xDaiHoprMs.functions.isConfirmed(txId).call()
+# isConfirmed = xDaiHoprMs.functions.isConfirmed(txId).call()
 # print(isConfirmed)
 
-payload = xDaiHoprMs.encodeABI("executeTransaction", args=[63])
+# payload = xDaiHoprMs.encodeABI("executeTransaction", args=[63])
 # print(payload)
+
+
+
+# revoking account, adding new schedule and two additional allocations
+p1 = mainNetDistributor.encodeABI("revokeAccount", args=["0x8b90b067d02132fC7c5cDf64b8cac04D55aBC2B2", "EarlyTokenBuyers"])
+p2 = mainNetDistributor.encodeABI("addSchedule", args=[[15901200, 31536000, 47437200], [333333, 333333, 333334], "EarlyTokenBuyers2"])
+p3 = mainNetDistributor.encodeABI("addAllocations", args=[["0xc08dE9d8834B3ee012D684dB239bF7868c818327"], [1963929428930000000000000], "EarlyTokenBuyers2"])
+p4 = mainNetDistributor.encodeABI("addAllocations", args=[["0xe3DB7B04c5B761a38a5D46adF68f5C213048c1Ae"], [1052279000000000000000000], "EarlyTokenBuyers"])
+
+print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66", 0, p1]))
+print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66", 0, p2]))
+print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66", 0, p3]))
+print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66", 0, p4]))
+
