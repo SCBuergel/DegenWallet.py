@@ -94,13 +94,21 @@ p1 = mainNetDistributor.encodeABI("revokeAccount", args=["0x8b90b067d02132fC7c5c
 p2 = mainNetDistributor.encodeABI("addSchedule", args=[[15901200, 31536000, 47437200], [333333, 333333, 333334], "EarlyTokenBuyers2"])
 p3 = mainNetDistributor.encodeABI("addAllocations", args=[["0xc08dE9d8834B3ee012D684dB239bF7868c818327"], [1963929428930000000000000], "EarlyTokenBuyers2"])
 p4 = mainNetDistributor.encodeABI("addAllocations", args=[["0xe3DB7B04c5B761a38a5D46adF68f5C213048c1Ae"], [1052279000000000000000000], "EarlyTokenBuyers"])
-p5 = xDaiHoprBoost.encodeABI("grantRole", args=["0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", "0x9CC170DcDCFbbe3079470A6E0aF9D2c1B7693Ad8"])
+p5 = xDaiHoprBoost.encodeABI("grantRole", args=["0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", "0xD7682Ef1180f5Fc496CF6981e4854738a57c593E"])
 
-print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66", 0, p1]))
-print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66", 0, p2]))
-print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66", 0, p3]))
-print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66", 0, p4]))
-print(mainNetHoprMs.encodeABI("submitTransaction", args=["0xdAC17F958D2ee523a2206206994597C13D831ec7", 0, transfer("0x960cC811e5eF36760f5c679AF90e821B10385e04", 2897, 6, usdt)]))
-print(mainNetHoprMs.encodeABI("submitTransaction", args=["0x43d13D7B83607F14335cF2cB75E87dA369D056c7", 0, p5]))
+print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p1]))
+print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p2]))
+print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p3]))
+print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p4]))
+#print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, transfer("0x960cC811e5eF36760f5c679AF90e821B10385e04", 2897, 6, usdt)]))
+#print("xDAI: " + xDaiHoprMsAddress + " , payload: " + xDaiHoprMs.encodeABI("submitTransaction", args=[xDaiHoprBoostAddress, 0, p5]))
+
+#print(mainNetHoprMs.encodeABI("submitTransaction", args=[usdtAddress, 0, transfer("0x054f9541B0b24A49F9dac8e2CeFd59dBeC58dACA", 20000, 6, usdt)]))
+#print(mainNetHoprMs.encodeABI("submitTransaction", args=[usdtAddress, 0, transfer("0xB6750624367fF6Cd307338a3d21FF0AA6BD80190", 80000, 6, usdt)]))
+#print(mainNetHoprMs.encodeABI("submitTransaction", args=[usdtAddress, 0, transfer("0xCcf17BCA3311C556c74354Eb3B66099574799e7e", 80000, 6, usdt)]))
+
+# print(xDaiHoprMs.encodeABI("revokeConfirmation", args=[64]))
+
+
 
 
