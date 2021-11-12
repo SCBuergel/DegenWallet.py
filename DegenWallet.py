@@ -23,6 +23,8 @@ xDaiHoprDistributorAddress = "0x987cb736fBfBc4a397Acd06045bf0cD9B9deFe66"
 xDaiHoprMsAddress = "0x5E1c4e7004B7411bA27Dc354330fab31147DFeF1"
 xDaiHoprStakeAddress = "0x912F4d6607160256787a2AD40dA098Ac2aFE57AC"
 xDaiHoprBoostAddress = "0x43d13D7B83607F14335cF2cB75E87dA369D056c7"
+xDaiXhoprAddress = "0xD057604A14982FE8D88c5fC25Aac3267eA142a08"
+xDaiWxhoprAddress = "0xD4fdec44DB9D44B8f2b6d529620f9C0C7066A2c1"
 
 mainNetHoprDistributorAddress = "0xB413a589ec21Cc1FEc27d1175105a47628676552"
 mainNetHoprMsAddress = "0x4F50Ab4e931289344a57f2fe4bBd10546a6fdC17"
@@ -43,6 +45,8 @@ usdt = web3.eth.contract(address = usdtAddress, abi = abiErc20)
 usdc = web3.eth.contract(address = usdcAddress, abi = abiErc20)
 dai = web3.eth.contract(address = daiAddress, abi = abiErc20)
 hopr = web3.eth.contract(address = hoprAddress, abi = abiErc20)
+xhopr = web3.eth.contract(address = xDaiXhoprAddress, abi = abiErc20)
+wxhopr = web3.eth.contract(address = xDaiWxhoprAddress, abi = abiErc20)
 xDaiHoprDistributor = web3.eth.contract(address = xDaiHoprDistributorAddress, abi = abiHoprDistributor)
 xDaiHoprMs = web3.eth.contract(address = xDaiHoprMsAddress, abi = abiGnosisWallet)
 xDaiHoprStake = web3.eth.contract(address = xDaiHoprStakeAddress, abi = abiHoprStake)
@@ -90,16 +94,16 @@ txId = 63
 
 
 # revoking account, adding new schedule and two additional allocations
-p1 = mainNetDistributor.encodeABI("revokeAccount", args=["0x8b90b067d02132fC7c5cDf64b8cac04D55aBC2B2", "EarlyTokenBuyers"])
-p2 = mainNetDistributor.encodeABI("addSchedule", args=[[15901200, 31536000, 47437200], [333333, 333333, 333334], "EarlyTokenBuyers2"])
-p3 = mainNetDistributor.encodeABI("addAllocations", args=[["0xc08dE9d8834B3ee012D684dB239bF7868c818327"], [1963929428930000000000000], "EarlyTokenBuyers2"])
-p4 = mainNetDistributor.encodeABI("addAllocations", args=[["0xe3DB7B04c5B761a38a5D46adF68f5C213048c1Ae"], [1052279000000000000000000], "EarlyTokenBuyers"])
-p5 = xDaiHoprBoost.encodeABI("grantRole", args=["0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", "0xD7682Ef1180f5Fc496CF6981e4854738a57c593E"])
+#p1 = mainNetDistributor.encodeABI("revokeAccount", args=["0x8b90b067d02132fC7c5cDf64b8cac04D55aBC2B2", "EarlyTokenBuyers"])
+#p2 = mainNetDistributor.encodeABI("addSchedule", args=[[15901200, 31536000, 47437200], [333333, 333333, 333334], "EarlyTokenBuyers2"])
+#p3 = mainNetDistributor.encodeABI("addAllocations", args=[["0xc08dE9d8834B3ee012D684dB239bF7868c818327"], [1963929428930000000000000], "EarlyTokenBuyers2"])
+#p4 = mainNetDistributor.encodeABI("addAllocations", args=[["0xe3DB7B04c5B761a38a5D46adF68f5C213048c1Ae"], [1052279000000000000000000], "EarlyTokenBuyers"])
+#p5 = xDaiHoprBoost.encodeABI("grantRole", args=["0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", "0xD7682Ef1180f5Fc496CF6981e4854738a57c593E"])
 
-print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p1]))
-print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p2]))
-print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p3]))
-print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p4]))
+#print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p1]))
+#print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p2]))
+#print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p3]))
+#print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, p4]))
 #print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, transfer("0x960cC811e5eF36760f5c679AF90e821B10385e04", 2897, 6, usdt)]))
 #print("xDAI: " + xDaiHoprMsAddress + " , payload: " + xDaiHoprMs.encodeABI("submitTransaction", args=[xDaiHoprBoostAddress, 0, p5]))
 
@@ -109,6 +113,14 @@ print("main: " + mainNetHoprMsAddress + " , payload: " + mainNetHoprMs.encodeABI
 
 # print(xDaiHoprMs.encodeABI("revokeConfirmation", args=[64]))
 
+mainSafeAddress = "0x752af2Bf9DbBC1105a83D2CA1eE8F1046D85B702"
+print(mainNetHoprMs.encodeABI("submitTransaction", args=[usdtAddress, 0, transfer(mainSafeAddress, 60000, 6, usdt)]))
 
+print(mainNetHoprMs.encodeABI("submitTransaction", args=[usdcAddress, 0, transfer(mainSafeAddress, 60000, 6, usdc)]))
 
+print(mainNetHoprMs.encodeABI("submitTransaction", args=[daiAddress, 0, transfer(mainSafeAddress, 10000, 18, dai)]))
 
+xdaiSafeAddress = "0xE9131488563776DE7FEa238d6112c5dA46be9a9F"
+print(xDaiHoprMs.encodeABI("submitTransaction", args=[xDaiHoprBoostAddress, 0, xDaiHoprBoost.encodeABI("grantRole", args=["0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", xdaiSafeAddress])]))
+
+print(xDaiHoprMs.encodeABI("submitTransaction", args=[xDaiXhoprAddress, 0, transfer(xdaiSafeAddress, 300000, 18, xhopr)]))
