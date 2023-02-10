@@ -22,23 +22,34 @@ balance = web3.eth.getBalance(account.address)
 
 gas = 100000
 gasPrice = 2000000000
-value = balance - 100000000000000
-#value = 1000000000000000000
+value1 = balance - 199999999999999
+value2 = 0
 print(f"balance: {web3.fromWei(balance,'ether')}")
-print(value)
+
 # HOPR DevBank
 recipient = "0x2402da10A6172ED018AEEa22CA60EDe1F766655C"
-tx = {
+tx1 = {
     'nonce': nonce,
     'to': recipient,
-    'value': value,
+    'value': value1,
     'gas': gas,
     'gasPrice': gasPrice
 }
 
-signed_tx = web3.eth.account.signTransaction(tx, privatekey)
+tx2 = {
+    'nonce': nonce + 1,
+    'to': recipient,
+    'value': value2,
+    'gas': gas,
+    'gasPrice': gasPrice
+}
 
-tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
+signed_tx1 = web3.eth.account.signTransaction(tx1, privatekey)
+signed_tx2 = web3.eth.account.signTransaction(tx2, privatekey)
 
-print(web3.toHex(tx_hash))
+tx_hash1 = web3.eth.sendRawTransaction(signed_tx1.rawTransaction)
+print(web3.toHex(tx_hash1))
+
+tx_hash2 = web3.eth.sendRawTransaction(signed_tx2.rawTransaction)
+print(web3.toHex(tx_hash2))
 
