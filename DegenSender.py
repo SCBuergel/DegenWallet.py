@@ -9,20 +9,27 @@ import sys
 with open("privatekey.hex") as f:
     privatekey = f.readline().strip()
 
-rpcHttp = "https://rpc.gnosischain.com"
+rpcHttp = "https://polygon-rpc.com"
+#rpcHttp = "https://poly-rpc.gateway.pokt.network"
+#rpcHttp = "https://bsc-dataseed1.binance.org"
+#rpcHttp = "https://rpc.ankr.com/eth"
+#rpcHttp = "https://rpc.builder0x69.io"
+#rpcHttp = "https://rpc.gnosischain.com"
 #rpcHttp = "https://derp.hoprnet.org/rpc/xdai/mainnet"
 web3 = Web3(Web3.HTTPProvider(rpcHttp))
 
 account = web3.eth.account.privateKeyToAccount(privatekey)
+print(f"address: {account.address}")
 
 nonce = web3.eth.getTransactionCount(account.address)
 
 balance = web3.eth.getBalance(account.address)
+print(f"balance: {balance}")
 
-gas = 100000
-gasFeePerGas = 2000000000
-maxPriorityFeePerGas = 1000000000
-value = balance - 199999999999999
+gas = 50000
+gasFeePerGas = 300000000000
+maxPriorityFeePerGas = 200000000000
+value = balance
 
 print(f"nonce: {nonce}")
 print(f"balance: {web3.fromWei(balance,'ether')}")
@@ -36,7 +43,7 @@ tx = {
     'gas': gas,
     'maxFeePerGas': gasFeePerGas,
     'maxPriorityFeePerGas': maxPriorityFeePerGas,
-    'chainId': 100,
+    'chainId': 137,
     'type': '0x2'
 }
 
