@@ -1,5 +1,4 @@
-# this script reads a private key and attempts to send the entire balance plus half the maximum tx fees to the HOPR DevBank on Gnosis Chain (that should not work and it fails (as expected) with:
-# ValueError: {'code': -32010, 'message': 'InsufficientFunds, Account balance: 200158000000000000, cumulative cost: 200258000000000000'}
+# this script reads a private key and attempts to send the entire balance plus 1 wei in tx fees to the HOPR DevBank on Gnosis Chain (that should not work but it does not fail)
 
 from web3 import Web3
 import json
@@ -10,8 +9,8 @@ import sys
 with open("privatekey.hex") as f:
     privatekey = f.readline().strip()
 
-#rpcHttp = "https://rpc.ankr.com/gnosis"
-rpcHttp = "https://derp.hoprnet.org/rpc/xdai/mainnet"
+rpcHttp = "https://rpc.gnosischain.com"
+#rpcHttp = "https://derp.hoprnet.org/rpc/xdai/mainnet"
 web3 = Web3(Web3.HTTPProvider(rpcHttp))
 
 account = web3.eth.account.privateKeyToAccount(privatekey)
@@ -21,35 +20,28 @@ nonce = web3.eth.getTransactionCount(account.address)
 balance = web3.eth.getBalance(account.address)
 
 gas = 100000
-gasPrice = 2000000000
-value1 = balance - 199999999999999
-value2 = 0
+gasFeePerGas = 2000000000
+maxPriorityFeePerGas = 1000000000
+value = balance - 199999999999999
+
+print(f"nonce: {nonce}")
 print(f"balance: {web3.fromWei(balance,'ether')}")
 
 # HOPR DevBank
 recipient = "0x2402da10A6172ED018AEEa22CA60EDe1F766655C"
-tx1 = {
+tx = {
     'nonce': nonce,
     'to': recipient,
-    'value': value1,
+    'value': value,
     'gas': gas,
-    'gasPrice': gasPrice
+    'maxFeePerGas': gasFeePerGas,
+    'maxPriorityFeePerGas': maxPriorityFeePerGas,
+    'chainId': 100,
+    'type': '0x2'
 }
 
-tx2 = {
-    'nonce': nonce + 1,
-    'to': recipient,
-    'value': value2,
-    'gas': gas,
-    'gasPrice': gasPrice
-}
+signed_tx = web3.eth.account.signTransaction(tx, privatekey)
 
-signed_tx1 = web3.eth.account.signTransaction(tx1, privatekey)
-signed_tx2 = web3.eth.account.signTransaction(tx2, privatekey)
-
-tx_hash1 = web3.eth.sendRawTransaction(signed_tx1.rawTransaction)
-print(web3.toHex(tx_hash1))
-
-tx_hash2 = web3.eth.sendRawTransaction(signed_tx2.rawTransaction)
-print(web3.toHex(tx_hash2))
+tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
+print(web3.toHex(tx_hash))
 
