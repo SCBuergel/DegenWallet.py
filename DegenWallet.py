@@ -6,13 +6,14 @@ from web3 import Web3
 import json
 import sys
 
-infuraProjectId = sys.argv[1]
+# infuraProjectId = sys.argv[1]
 
-print("infura project ID from command line parameter: " + infuraProjectId)
+# print("infura project ID from command line parameter: " + infuraProjectId)
 
-infuraWS = "wss://mainnet.infura.io/ws/v3/" + infuraProjectId
+# infuraWS = "wss://mainnet.infura.io/ws/v3/" + infuraProjectId
 # infuraHTTP = "https://mainnet.infura.io/v3/" + infuraProjectId
 # xDaiWS = "wss://rpc.xdaichain.com/wss"
+GnosisRPC = "https://rpc.ankr.com/gnosis"
 
 erc20abi = "ABI/ERC20.json"
 hoprDistributorAbi = "ABI/HoprDistributor.json"
@@ -32,15 +33,18 @@ xDaiHoprBoostAddress = "0x43d13D7B83607F14335cF2cB75E87dA369D056c7"
 xDaiXhoprAddress = "0xD057604A14982FE8D88c5fC25Aac3267eA142a08"
 xDaiWxhoprAddress = "0xD4fdec44DB9D44B8f2b6d529620f9C0C7066A2c1"
 
+xGNOAddress = "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb"
+
 mainNetHoprDistributorAddress = "0xB413a589ec21Cc1FEc27d1175105a47628676552"
 mainNetHoprMsAddress = "0x4F50Ab4e931289344a57f2fe4bBd10546a6fdC17"
 QMinter = "0xD7682Ef1180f5Fc496CF6981e4854738a57c593E"
 
-web3 = Web3(Web3.WebsocketProvider(infuraWS))
+web3 = Web3(Web3.HTTPProvider(GnosisRPC))
+# web3 = Web3(Web3.WebsocketProvider(infuraWS))
 # web3 = Web3(Web3.HTTPProvider(infuraHTTP))
 # web3 = Web3(Web3.WebsocketProvider(xDaiWS))
 
-print(web3.isConnected())
+print(f"RPC provider is {'connected' if web3.is_connected() else 'not connected'}")
 
 abiErc20 = json.load(open(erc20abi))
 abiHoprDistributor = json.load(open(hoprDistributorAbi))
@@ -54,6 +58,7 @@ dai = web3.eth.contract(address = daiAddress, abi = abiErc20)
 hopr = web3.eth.contract(address = hoprAddress, abi = abiErc20)
 xhopr = web3.eth.contract(address = xDaiXhoprAddress, abi = abiErc20)
 wxhopr = web3.eth.contract(address = xDaiWxhoprAddress, abi = abiErc20)
+xgno = web3.eth.contract(address = xGNOAddress, abi = abiErc20)
 xDaiHoprDistributor = web3.eth.contract(address = xDaiHoprDistributorAddress, abi = abiHoprDistributor)
 xDaiHoprMs = web3.eth.contract(address = xDaiHoprMsAddress, abi = abiGnosisWallet)
 xDaiHoprStake = web3.eth.contract(address = xDaiHoprStakeAddress, abi = abiHoprStake)
@@ -107,6 +112,12 @@ newTokenPurchaserAmount = 96666667000000000000000000
 print(mainNetHoprMs.encodeABI("submitTransaction", args=[mainNetHoprDistributorAddress, 0, mainNetDistributor.encodeABI("addAllocations", args=[[newTokenPurchaserAddress], [newTokenPurchaserAmount], "EarlyTokenBuyers"])]))
 """
 
+
+# TRANSFER USDC, USDT, DAI
+ComSafeGnosis = "0xD9a00176Cf49dFB9cA3Ef61805a2850F45Cb1D05"
+amountGNO = 500000000000000000000
+
+print(xDaiHoprMs.encodeABI("submitTransaction", args=[xGNOAddress, 0, xgno.encodeABI("transfer", args=[ComSafeGnosis, amountGNO])]))
 
 
 """
